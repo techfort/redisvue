@@ -67,7 +67,6 @@ export default {
         this.setKey.trim(),
         this.setValue.trim(),
       );
-      console.log(error, data);
       this.latestSET = error || data;
     },
     async execHSET() {
@@ -102,6 +101,10 @@ export default {
       latestSADD: '',
     };
   },
-
+  created() {
+    if (!this.$store.getters.CONNECTED) {
+      this.$router.push('/');
+    }
+  },
 };
 </script>

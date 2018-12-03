@@ -1,25 +1,22 @@
 <template>
-    <div id="query">
-        <div class="container-fluid">
-            <h6>Query</h6>
-            <div class="row">
-              <div class="col">
-                <form>
-                  <label for="term">search key</label><input class="form-control" type="text" id="term" v-on:keyup="search" v-model="term"/>
-                </form>
-              </div>
-            </div>
-            <div class="row" v-if="entries.length > 0">
-                <div class="col"><button @click="selectAll">SELECT ALL</button></div>
-                <div class="col"><button @click="addEntries">ADD TO EVENTS</button></div>
-            </div> 
-            <div v-for="e in entries" v-bind:entry="e" v-bind:key="e.key" class="row evt">
-                <div class="col-md-1"><input type="checkbox" v-model="selected" :value="e.key" /></div>
-                <div class="col-md-1">{{ e.type }}</div>
-                <div class="col-md-3">{{ e.key }}</div>
-                <div class="col-md-7">{{ e.value }}</div>
-            </div>
-            
+    <div class="container-fluid">
+        <div class="row">
+            <label><h2>query</h2></label>
+        </div>
+        <div class="row">
+              <label for="term">search key</label><input class="form-control" type="text" id="term" v-on:keyup="search" v-model="term"/>
+        </div>
+        <div class="row" v-if="entries.length > 0">
+                <div class="col"><a class="uilink" @click="selectAll">SELECT ALL</a></div>
+                <div class="col"><a class="uilink" @click="addEntries">ADD TO EVENTS</a></div>
+        </div>
+        <div class="maincontent">
+          <div v-for="e in entries" v-bind:entry="e" v-bind:key="e.key" class="row evt">
+              <div class="col-md-1"><input type="checkbox" v-model="selected" :value="e.key" /></div>
+              <div class="col-md-1" v-bind:class="e.type">{{ e.type }}</div>
+              <div class="col-md-3">{{ e.key }}</div>
+              <div class="col-md-7 evtvalue">{{ e.value }}</div>
+          </div>
         </div>
     </div>
 </template>
@@ -38,14 +35,19 @@ const scan = (client, term, cursor, results) => client.scanAsync(cursor, 'MATCH'
     return scan(client, term, cursor, results);
   }).catch((err) => { throw err; });
 
-
 const query = async (client, term) => {
   const keys = await scan(client, term, 0, []);
   const results = [];
   const promises = keys.map(k => client.typeAsync(k).then(async (typeResult) => {
     const method = GETTERS[typeResult];
-    const { error, data } = await to(client[method](k));
-    console.log(error, data);
+    const args = [k];
+    if (method === 'zrangeAsync' || method === 'lrangeAsync') {
+      args.push(0, -1);
+      if (method === 'zrangeAsync') {
+        args.push('WITHSCORES');
+      }
+    }
+    const { error, data } = await to(client[method](...args));
     if (!error) {
       results.push(entry(k, typeResult, data));
     }
@@ -91,5 +93,4 @@ export default {
     };
   },
 };
-
 </script>

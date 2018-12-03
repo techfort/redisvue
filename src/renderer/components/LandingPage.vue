@@ -2,9 +2,6 @@
   <div id="wrapper">
     <main>
       <div v-if="disconnected"> 
-        <span class="title">
-          Connect to Redis Server
-        </span>
         <connect></connect>
       </div>
       

@@ -1,19 +1,20 @@
 <template>
     <div class='container-fluid'>
-        <div class='row insertform'>
-            <div class="container">
-                <label for="search">SEARCH</label>
-                <input class="form-control" type='text' id='search' v-model='search' />
-            </div>
-            <div class="container">
-                <a @click="reset" class="uilink">CLEAR</a>
-                <a @click="invert" class="uilink">INVERT SELECTION</a>
-            </div>
+        <div class="row">
+          <label><h2>sets</h2></label>
+        </div>
+        <div class="row">
+            <label for="search">SEARCH</label>
+            <input class="form-control" type='text' id='search' v-model='search' />
+        </div>
+        <div class="row">
+            <div class="col"><a @click="reset" class="uilink">CLEAR</a></div>
+            <div class="col"><a @click="invert" class="uilink">INVERT SELECTION</a></div>
         </div>
         <div class='row'>
             <div class='col-md-4 column'>
                 <label>SETS</label>
-                <div class='evt selectable' @click='select(e.key)' v-for='e in sets' v-bind='e' v-bind:key='e.key'>
+                <div class='evt selectable' v-bind:class="{ 'sel' : e.key == sel1key || e.key == sel2key }" @click='select(e.key)' v-for='e in sets' v-bind='e' v-bind:key='e.key'>
                     {{ e.key }}
                 </div>
             </div>
@@ -63,6 +64,9 @@
     font-size: 0.8em;
     background: #ccc;
 }
+.sel {
+  color: yellowgreen;
+}
 </style>
 
 <script>
@@ -70,7 +74,7 @@ export default {
   name: 'Sets',
   computed: {
     sets() {
-      return Object.values(this.$store.getters.SETS).reduce((acc, { current }) => {
+      return Object.values(this.$store.getters.SET).reduce((acc, { current }) => {
         if (current.key.indexOf(this.search) !== -1) {
           acc[current.key] = current;
         }
@@ -138,10 +142,8 @@ export default {
       };
     },
     select(id) {
-      console.log('this.sets', this.sets, this.sel1, this.sel2);
       if (this.sel1key === '') {
         this.sel1 = this.sets[id];
-        console.log('this.sets', this.sets, this.sel1, this.sel2);
         return;
       }
       this.sel2 = this.sets[id];
@@ -165,7 +167,9 @@ export default {
     };
   },
   created() {
-    console.log(this.allsets);
+    if (!this.$store.getters.CONNECTED) {
+      this.$router.push('/');
+    }
   },
 };
 </script>

@@ -39,21 +39,40 @@ label {
   background: rgba(255, 255, 255, 0.1);
   width: 100%;
   padding-left: 10px;
+  color: yellowgreen;
 }
 
-.maincontainer {
-  height: 100vh;
+a {
+  outline: none;
 }
-
+.row {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+.container-fluid {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.col {
+  padding: 0 4px 0 0 !important;
+}
+.header {
+  padding-left: 55px;
+}
+.maincontent {
+  flex: 1;
+  overflow-y: auto;
+}
 .sidebar {
   float: left;
   height: 100vh;
-  width: 65px;
-  border-right: 1px solid #777;
+  width: 55px;
+  z-index: 10000;
+  /* border-right: 1px solid #777; */
 }
 
 .status {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   margin: 0;
   padding: 0;
@@ -66,18 +85,73 @@ label {
 .evt {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+}
+.evtvalue {
+  word-wrap:break-word;
+  word-break:break-all;
+  overflow: hidden;
+  max-height: 60px;
 }
 .evtrow {
     font-size: 0.8rem;
 }
+.fullvalue {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  word-wrap: none;
+  word-break: normal;
+  color: white;
+}
+pre {
+  color: white;
+}
 .uilink {
   font-variant: small-caps;
+  padding: 0 1em;
+  height: 50px;
+  line-height: 50px;
   font-weight: 700;
-  text-decoration: underline !important;
+  cursor: pointer;
+  color: #2f3945 !important;
+  background: yellowgreen !important;
+  border-radius: 0.5em;
 }
+
+.uilink:hover {
+  color: aquamarine !important;
+}
+
 .evtbadge {
   font-variant: small-caps;
+  width: 100%;
+  font-weight: 700;
 }
+
+.set {
+  background: yellowgreen;
+  color: white;
+}
+
+.zset {
+  color: yellowgreen !important;
+}
+ 
+.hash {
+  background: darkgreen;
+  color: white;
+}
+
+.list {
+  background: white;
+  color: #2f3945;
+}
+
+.string {
+  background: white;
+  color: green;
+}
+
 .evtkey {
   text-align: center;
 }
@@ -94,12 +168,11 @@ a, a:hover, a:visited {
 }
 
 .nav-item a:hover {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.1em;
+  color: rgba(255, 25, 25, 0.8);
 }
 
-span.menuopt {
-  font-size: 3em;
+.menuopt {
+  font-size: 2em;
   font-weight: 800;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.8);
@@ -110,9 +183,16 @@ span.menuopt {
   bottom: 20px;
 }
 .nav-item {
-  height: 80px;
+  cursor: pointer;
+  /* height: 80px;
   line-height: 80px;
-  border-bottom: 1px solid #777;
+  */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   text-align: center;
+}
+.navitemtext {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9em;
+  font-variant: small-caps;
 }
 </style>

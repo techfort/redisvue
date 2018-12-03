@@ -1,14 +1,14 @@
 <template>
     <div class="container-fluid">
         <div class="row evtrow">
-            <div class="col-md-1 evt evtkey">
-                <span class="badge evtbadge"
-                    v-bind:class="{ 'badge-primary': event.type === 'string', 'badge-danger': event.type === 'set', 'badge-warning': event.type === 'hash'}">
-                    {{ event.type }}
-                </span>
+            <div class="col-md-1 evt evtkey evtbadge"
+                    v-bind:class="event.type">
+                        {{ event.type }}
             </div>
-            <div class="col-md-3 keycol evt">{{ evtKey }}</div>
-            <div class="col-md-8 evt">{{ event.value }}</div>
+            <div class="col-md-3 keycol evt">
+              <router-link :to="{ name: 'history', params: { key: event.key, type: event.type }}">{{ evtKey }}</router-link>
+            </div>
+            <div class="col-md-8 evt evtvalue">{{ event.value }}</div>
         </div>
     </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   props: ['event'],
   computed: {
     evtKey() {
-      return this.event.key.length > 20 ? `${this.event.key.substring(0, 20)}...` : this.event.key;
+      return (this.event && this.event.key && this.event.key.length > 20) ? `${this.event.key.substring(0, 50)}...` : this.event.key;
     },
   },
 };

@@ -1,16 +1,28 @@
 <template>
-  <div class="sidebar maincontainer">
+  <div class="sidebar sticky-top">
     <div class="nav-item">
-      <router-link to="/watch"><span class="menuopt">&#x23ff;</span></router-link>
+      <router-link to="/watch">
+        <div class="menuopt">&#x23ff;</div>
+        <div class="navitemtext">watch</div>
+      </router-link>
     </div>
     <div class="nav-item">
-      <router-link to="/insert"><span class="menuopt">&#x21d2;</span></router-link>
+      <router-link to="/insert">
+        <div class="menuopt">&#x21d2;</div>
+        <div class="navitemtext">insert</div>
+      </router-link>
     </div>
     <div class="nav-item">
-      <router-link to="/query"><span class="menuopt">&#x26A1;</span></router-link>
+      <router-link to="/query">
+        <div class="menuopt">&#x26A1;</div>
+        <div class="navitemtext">query</div>
+      </router-link>
     </div>
     <div class="nav-item">
-      <router-link to="/sets"><span class="menuopt">&#x2282;</span></router-link>
+      <router-link to="/sets">
+        <div class="menuopt">&#x2282;</div>
+        <div class="navitemtext">sets</div>
+      </router-link>
     </div>
     <div class="nav-item">
       <a @click="disconnect"><span class="menuopt">&#x23fb;</span></a>
@@ -29,6 +41,7 @@ export default {
   methods: {
     disconnect() {
       this.$store.dispatch('disconnect');
+      this.$router.push('/');
     },
   },
 };

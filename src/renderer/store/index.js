@@ -1,43 +1,8 @@
-/*
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-import { createPersistedState, createSharedMutations } from 'vuex-electron';
-
-import modules from './modules';
-
-Vue.use(Vuex);
-
-export default new Vuex.Store({
-  modules,
-  plugins: [
-    createPersistedState(),
-    createSharedMutations(),
-  ],
-  strict: process.env.NODE_ENV !== 'production',
-});
-*/
-/**
- * The file enables `@/store/index.js` to import all vuex modules
- * in a one-shot manner. There should not be any reason to edit this file.
- */
-
-/*
-const files = require.context('.', false, /\.js$/);
-const modules = {};
-
-files.keys().forEach((key) => {
-  if (key === './index.js') return;
-  modules[key.replace(/(\.\/|\.js)/g, '')] = files(key).default;
-});
-
-export default modules;
-*/
 import Vuex from 'vuex';
 import Vue from 'vue';
 import { createClient } from 'redis';
 import { promisifyAll } from 'bluebird';
-import to, { entry, TYPES, OPS } from '../helpers';
+import to, { entry, TYPES, GETTERS } from '../helpers';
 
 Vue.use(Vuex);
 
@@ -51,6 +16,8 @@ const state = {
   string: {},
   hash: {},
   set: {},
+  zset: {},
+  list: {},
 };
 
 const k = str => str.replace('__keyspace@0__:', '');
@@ -63,7 +30,7 @@ const addEntry = (state, e) => {
     });
   }
   state[e.type][e.key].current = e;
-  state[e.type][e.key].history.push(e);
+  state[e.type][e.key].history.unshift(e);
   return state;
 };
 
@@ -71,24 +38,32 @@ const initClient = (state, client) => {
   state.redis = client;
   state.client = promisifyAll(createClient({ url: state.redisURL }));
   state.redis.psubscribe('__keyspace@0__:*');
-  state.redis.on('pmessage', async (pattern, ch, op) => {
+  state.redis.on('pmessage', async (_pattern, ch, op) => {
     const key = k(ch);
     const type = TYPES[op];
-    const { err, data } = await to(state.client[OPS[op]](key));
+    if (op === 'expire' ||
+    op === 'del'
+    ) {
+      return;
+    }
+    const { err, data } = await to(state.client[GETTERS[type]](key));
     if (err) {
       return;
     }
     const e = entry(key, type, data);
     addEntry(state, e);
   });
+  return state;
 };
 
 const mutations = {
   ADD_ENTRY(state, e) {
     state = addEntry(state, e);
+    return state;
   },
   CONNECT(state, e) {
-    initClient(state, e);
+    state = initClient(state, e);
+    return state;
   },
   DISCONNECT(state, err) {
     state.client.quit();
@@ -96,9 +71,11 @@ const mutations = {
     state.redis = null;
     state.client = null;
     state.errors.push(err);
+    return state;
   },
   SET_URL(state, url) {
     state.redisURL = url;
+    return state;
   },
 };
 
@@ -118,11 +95,15 @@ const actions = {
 };
 
 const getters = {
+  URL: state => state.redisURL,
   REDIS: state => state.redis,
   CONNECTED: state => (state.redis ? state.redis.connected : false),
   EVENTS: state => state.entries,
   CLIENT: state => state.client,
-  SETS: state => state.set,
+  SET: state => state.set,
+  HASH: state => state.hash,
+  STRING: state => state.string,
+  getKeyHistory: state => (type, key) => state[type][key].history,
 };
 
 export default new Vuex.Store({

@@ -1,14 +1,13 @@
 <template>
     <div class='container'>
-      <form>
-        <div class='control-group'>
+        <div>
           <label for='url'>
+            <h2>connect to redis</h2>
             URL
           </label>
           <input type='text' class='form-control' v-model='url' />
-          <button class='form-control' @click="connect">CONNECT</button>
+          <a class='uilink' @click="connect">CONNECT</a>
         </div>
-      </form>
     </div>
 </template>
 <script>
@@ -23,9 +22,10 @@ export default {
       const client = redisAsync.createClient({
         url: this.redisURL(),
       });
-      client.on('ready', () => {
-        this.$store.dispatch('setUrl', this.redisURL());
-        this.$store.dispatch('connect', client);
+      client.on('ready', async () => {
+        await this.$store.dispatch('setUrl', this.redisURL());
+        await this.$store.dispatch('connect', client);
+        this.$router.push('/watch');
       });
       client.on('error', (err) => {
         this.$store.dispatch('disconnect', err);
