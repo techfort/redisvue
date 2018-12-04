@@ -67,7 +67,7 @@ html, body {
 }
 .maincontainer {
   clear:both;
-  padding-top: 24px;
+  padding-top: 32px;
 }
 
 .logo {
@@ -237,11 +237,13 @@ pre {
   width: 100%;
   font-weight: 700;
 }
-#watchlist, #querylist{
+#watchlist, #querylist, #historylist {
   font-size:0.8em;
   flex: 1;
   max-height: 100vh;
   overflow: auto;
+  margin-bottom: 100px;
+  padding-bottom: 100px;
 }
 #querylist {
   max-height: 79vh;

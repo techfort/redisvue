@@ -3,9 +3,11 @@
     <div class="row">
       <label><h2>history of [ {{ type }} ]: {{ key }}</h2></label>
     </div>
-    <div class="row" v-for="e in history" v-bind="e" :key="e.id">
-      <div class="col-md-2 evt">{{ e | ts }}</div>
-      <div class="col-md-9 fullvalue"><pre>{{ e.value | jsonify }}</pre></div>
+    <div class="maincontent" id="historylist">
+      <div class="row" v-for="e in history" v-bind="e" :key="e.id">
+        <div class="col-md-2 evt">{{ e | ts }}</div>
+        <div class="col-md-9 fullvalue"><pre>{{ e.value | jsonify }}</pre></div>
+      </div>
     </div>
   </div>
 </template>
