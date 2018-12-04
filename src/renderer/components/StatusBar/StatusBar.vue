@@ -1,7 +1,7 @@
 <template>
   <footer class="status row sticky-bottom">
     <div class="col-md-1">
-        <router-link to="/">/</router-link> 
+        <router-link to="/">&#x2302; home</router-link> 
     </div>
     <div class="col-md-1">
     </div>

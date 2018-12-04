@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="header">
           <div class="row">
-            <label><h2>watch</h2></label>
+            <label><h2>watch <span class="numkeys">[{{ entries.length }} keys]</span></h2></label>
           </div>
           <div class="row">
               <div class="col">
@@ -17,11 +17,11 @@
           </div>
           <div class="row">
               <div class="col-md-1"><label>type</label></div>
-              <div class="col-md-3"><label>key</label></div>
-              <div class="col-md-8"><label>value</label></div>
+              <div class="col-md-4"><label>key</label></div>
+              <div class="col-md-7"><label>value</label></div>
           </div>
         </div>
-        <div class="maincontent">
+        <div class="maincontent" id="watchlist">
           <Event v-for="e in entries" v-bind:event="e" v-bind:key="e.id"/>
         </div>
     </div>

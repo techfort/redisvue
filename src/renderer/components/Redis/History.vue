@@ -23,7 +23,11 @@ export default {
       return this.$route.params.type.toUpperCase();
     },
     history() {
-      return this.$store.getters[this.type][this.key].history;
+      try {
+        return this.$store.getters[this.type][this.key].history;
+      } catch (err) {
+        return [];
+      }
     },
   },
   filters: {

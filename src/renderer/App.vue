@@ -1,14 +1,27 @@
 <template>
-  <div id="app"> 
-    <NavigationBar></NavigationBar> 
-    <div class="main maincontainer">
-      <router-view></router-view>
+  <div id="app">
+    <div class="windowcontrols container-fluid">
+      <div class="row">
+        <div class="col-6"><img src="@/assets/icon-redis.svg" width="32" />RedisVue</div>
+        <div class="col-6 text-right">
+          <a class="windowcontrol" @click="minimize">&#x2014;</a>
+          <a class="windowcontrol" @click="maximize">&#x1f5d6;</a>
+          <a class="windowcontrol" @click="exitApp">&#x274c;</a>
+        </div>
+      </div>
     </div>
-    <StatusBar></StatusBar>
+    <div class="maincontainer">
+      <NavigationBar></NavigationBar> 
+      <div class="main">
+        <router-view></router-view>
+      </div>
+      <StatusBar></StatusBar>
+    </div>
   </div>
 </template>
 
 <script>
+import { remote } from 'electron';
 import store from './store';
 import StatusBar from './components/StatusBar/StatusBar.vue';
 import NavigationBar from './components/NavigationBar/NavigationBar.vue';
@@ -20,31 +33,100 @@ export default {
     StatusBar,
   },
   store,
+  methods: {
+    exitApp() {
+      remote.getCurrentWindow().close();
+    },
+    minimize() {
+      remote.getCurrentWindow().minimize();
+    },
+    maximize() {
+      const win = remote.getCurrentWindow();
+      const max = win.isMaximized();
+      if (max) {
+        win.unmaximize();
+        return;
+      }
+      win.maximize();
+    },
+  },
 };
 </script>
 
-<style>
+<style lang="scss">
 @import '~bootstrap/dist/css/bootstrap.css';
-
+@import '~nord/src/sass/nord.scss';
+@import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono');
 html, body {
-  font-family: 'Noto Sans', sans-serif;
-  background: #2e3440 !important;
-  color: #d8dee9 !important;
+  font-family: 'Share Tech Mono', 'Noto Sans', sans-serif;
+  font-size: 1.1em;
+  background: $nord0 !important;
+  color: $nord6 !important;
   height: 100vh;
+  overflow:hidden;
+}
+.maincontainer {
+  clear:both;
+  padding-top: 24px;
+}
+
+.logo {
+  float: left;
+
+}
+.controls {
+  padding: 0px 0.5em 0px 1em;
+}
+.windowcontrols {
+  z-index: 1000000000;
+  background: $nord0;
+  text-size: 0.8em;
+  top: 0;
+  left: 0;
+  position: fixed;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.windowcontrol {
+  margin-right: 0.5em;
+  margin-left: 1em;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
 }
 
 label {
   font-variant: small-caps;
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.1);
+  background: $nord1;
   width: 100%;
-  padding-left: 10px;
-  color: yellowgreen;
+  padding-left: 1em;
+  color: $nord14;
 }
 
 a {
   outline: none;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: $nord0; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: $nord3; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: $nord4; 
+}
+
 .row {
   margin-right: 0px !important;
   margin-left: 0px !important;
@@ -59,10 +141,12 @@ a {
 .header {
   padding-left: 55px;
 }
+/*
 .maincontent {
   flex: 1;
   overflow-y: auto;
 }
+*/
 .sidebar {
   float: left;
   height: 100vh;
@@ -70,22 +154,47 @@ a {
   z-index: 10000;
   /* border-right: 1px solid #777; */
 }
+.numkeys {
+  font-size: 0.6em
+}
+.info {
+  flex: 1;
+  max-height: 60vh;
+  overflow: auto;
+}
+.serverinfo {
+  font-size: 0.8em;
+}
+.suggestion {
+  font-size: 0.9em;
+  background: $nord3;
+}
+
+.homeinfo {
+  box-shadow: 4px 4px 4px 2px $nord1;
+  background: $nord3;
+  padding: 1em !important;
+}
+a.normallink, a.normallink:hover, a.normallink:visited {
+  color: $nord7 !important;
+}
 
 .status {
   position: fixed;
   bottom: 0;
   margin: 0;
   padding: 0;
+  z-index: 1000000;
   width: 100%;
   height: 20px; /* Set the fixed height of the footer here */
   line-height: 20px; /* Vertically center the text there */
-  background-color: #2f3945;
+  background-color: $nord1;
   font-size: 0.8rem;
 }
 .evt {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    font-family: 'Courier New', Courier, monospace;
+    /* font-family: 'Courier New', Courier, monospace; */
     font-size: 0.9em;
 }
 .evtvalue {
@@ -98,28 +207,29 @@ a {
     font-size: 0.8rem;
 }
 .fullvalue {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.9em;
+  border-top: 1px solid $nord3;
   word-wrap: none;
   word-break: normal;
-  color: white;
+  color: $nord4;
 }
 pre {
-  color: white;
+  color:$nord4;
 }
 .uilink {
   font-variant: small-caps;
-  padding: 0 1em;
+  padding: 0.5em;
   height: 50px;
   line-height: 50px;
   font-weight: 700;
   cursor: pointer;
-  color: #2f3945 !important;
-  background: yellowgreen !important;
+  color: $nord0 !important;
+  background: $nord14 !important;
   border-radius: 0.5em;
 }
 
 .uilink:hover {
-  color: aquamarine !important;
+  color: $nord7 !important;
 }
 
 .evtbadge {
@@ -127,55 +237,66 @@ pre {
   width: 100%;
   font-weight: 700;
 }
-
+#watchlist, #querylist{
+  font-size:0.8em;
+  flex: 1;
+  max-height: 100vh;
+  overflow: auto;
+}
+#querylist {
+  max-height: 79vh;
+}
 .set {
-  background: yellowgreen;
-  color: white;
+  background: $nord11;
+  color: $nord4;
 }
 
 .zset {
-  color: yellowgreen !important;
+  color: $nord12 !important;
 }
  
 .hash {
-  background: darkgreen;
-  color: white;
+  background: $nord14;
+  color: $nord3;
 }
 
 .list {
-  background: white;
-  color: #2f3945;
+  background: $nord4;
+  color: $nord10;
 }
 
 .string {
-  background: white;
-  color: green;
+  background: $nord1;
+  color: $nord11;
 }
 
 .evtkey {
   text-align: center;
+  word-wrap:break-word;
+  word-break:break-all;
 }
 .insertform {
   margin-bottom: 3em;
 }
 
 a, a:visited, a:target {
-  color: rgba(255, 255, 255, 0.6);
+  color: $nord7;
 }
 
-a, a:hover, a:visited {
+a:hover {
+  color: $nord15;
   text-decoration: none;
 }
 
-.nav-item a:hover {
-  color: rgba(255, 25, 25, 0.8);
+.nav-item:hover {
+  color: $nord11;
 }
 
 .menuopt {
   font-size: 2em;
   font-weight: 800;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: $nord3;
 }
 
 .disconnect {
@@ -184,14 +305,12 @@ a, a:hover, a:visited {
 }
 .nav-item {
   cursor: pointer;
-  /* height: 80px;
-  line-height: 80px;
-  */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid $nord3;
   text-align: center;
+  color: $nord7 !important;
 }
 .navitemtext {
-  color: rgba(255, 255, 255, 0.4);
+  color: $nord4;
   font-size: 0.9em;
   font-variant: small-caps;
 }

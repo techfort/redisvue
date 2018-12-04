@@ -42,7 +42,7 @@ const initClient = (state, client) => {
     const key = k(ch);
     const type = TYPES[op];
     if (op === 'expire' ||
-    op === 'del'
+    op === 'del' || !GETTERS[type]
     ) {
       return;
     }
@@ -102,8 +102,11 @@ const getters = {
   CLIENT: state => state.client,
   SET: state => state.set,
   HASH: state => state.hash,
+  ZSET: state => state.zset,
+  LIST: state => state.list,
   STRING: state => state.string,
   getKeyHistory: state => (type, key) => state[type][key].history,
+  INFO: state => state.redis.server_info,
 };
 
 export default new Vuex.Store({

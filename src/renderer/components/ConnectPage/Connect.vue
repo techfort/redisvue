@@ -25,7 +25,7 @@ export default {
       client.on('ready', async () => {
         await this.$store.dispatch('setUrl', this.redisURL());
         await this.$store.dispatch('connect', client);
-        this.$router.push('/watch');
+        // this.$router.push('/watch');
       });
       client.on('error', (err) => {
         this.$store.dispatch('disconnect', err);

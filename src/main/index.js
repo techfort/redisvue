@@ -1,11 +1,12 @@
 import { app, BrowserWindow } from 'electron' // eslint-disable-line
 
+const path = require('path');
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\') // eslint-disable-line
+  global.__static = path.join(__dirname, '/static').replace(/\\/g, '\\\\') // eslint-disable-line
 }
 
 let mainWindow;
@@ -21,9 +22,11 @@ function createWindow() {
     height: 563,
     useContentSize: true,
     width: 1000,
+    frame: false,
+    icon: path.join(__dirname, 'assets/icon-redis.svg'),
   });
-
   mainWindow.loadURL(winURL);
+  mainWindow.setMenu(null);
 
   mainWindow.on('closed', () => {
     mainWindow = null;

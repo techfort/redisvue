@@ -5,10 +5,10 @@
                     v-bind:class="event.type">
                         {{ event.type }}
             </div>
-            <div class="col-md-3 keycol evt">
+            <div class="col-md-4 keycol evt">
               <router-link :to="{ name: 'history', params: { key: event.key, type: event.type }}">{{ evtKey }}</router-link>
             </div>
-            <div class="col-md-8 evt evtvalue">{{ event.value }}</div>
+            <div class="col-md-7 evt evtvalue">{{ event.value }}</div>
         </div>
     </div>
 </template>

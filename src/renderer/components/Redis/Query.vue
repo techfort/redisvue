@@ -1,5 +1,6 @@
 <template>
     <div class="container-fluid">
+      <div class="header">
         <div class="row">
             <label><h2>query</h2></label>
         </div>
@@ -10,14 +11,15 @@
                 <div class="col"><a class="uilink" @click="selectAll">SELECT ALL</a></div>
                 <div class="col"><a class="uilink" @click="addEntries">ADD TO EVENTS</a></div>
         </div>
-        <div class="maincontent">
-          <div v-for="e in entries" v-bind:entry="e" v-bind:key="e.key" class="row evt">
-              <div class="col-md-1"><input type="checkbox" v-model="selected" :value="e.key" /></div>
-              <div class="col-md-1" v-bind:class="e.type">{{ e.type }}</div>
-              <div class="col-md-3">{{ e.key }}</div>
-              <div class="col-md-7 evtvalue">{{ e.value }}</div>
-          </div>
+      </div>
+      <div class="maincontent" id="querylist">
+        <div v-for="e in entries" v-bind:entry="e" v-bind:key="e.key" class="row evt">
+            <div class="col-md-1"><input type="checkbox" v-model="selected" :value="e.key" /></div>
+            <div class="col-md-1 evtbadge" v-bind:class="e.type">{{ e.type }}</div>
+            <div class="col-md-3">{{ e.key }}</div>
+            <div class="col-md-7 evtvalue">{{ e.value }}</div>
         </div>
+      </div>
     </div>
 </template>
 

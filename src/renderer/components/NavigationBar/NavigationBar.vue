@@ -9,7 +9,7 @@
     <div class="nav-item">
       <router-link to="/insert">
         <div class="menuopt">&#x21d2;</div>
-        <div class="navitemtext">insert</div>
+        <div class="navitemtext">run</div>
       </router-link>
     </div>
     <div class="nav-item">

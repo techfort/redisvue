@@ -64,6 +64,9 @@
     font-size: 0.8em;
     background: #ccc;
 }
+.command pre {
+  color: #333;
+}
 .sel {
   color: yellowgreen;
 }
