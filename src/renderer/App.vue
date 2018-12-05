@@ -4,9 +4,11 @@
       <div class="row">
         <div class="col-6"><img src="@/assets/icon-redis.svg" width="32" />RedisVue</div>
         <div class="col-6 text-right">
-          <a class="windowcontrol" @click="minimize">&#x2014;</a>
-          <a class="windowcontrol" @click="maximize">&#x1f5d6;</a>
-          <a class="windowcontrol" @click="exitApp">&#x274c;</a>
+          <a class="windowcontrol" @click="$electron.remote.getCurrentWindow().minimize()">&#x2014;</a>
+          <a class="windowcontrol" @click="$electron.remote.getCurrentWindow().isMaximized() ?
+          $electron.remote.getCurrentWindow().unmaximize() :
+          $electron.remote.getCurrentWindow().maximize()">&#x1f5d6;</a>
+          <a class="windowcontrol" @click="$electron.remote.getCurrentWindow().close()">&#x274c;</a>
         </div>
       </div>
     </div>
@@ -21,7 +23,6 @@
 </template>
 
 <script>
-import { remote } from 'electron';
 import store from './store';
 import StatusBar from './components/StatusBar/StatusBar.vue';
 import NavigationBar from './components/NavigationBar/NavigationBar.vue';
@@ -34,6 +35,7 @@ export default {
   },
   store,
   methods: {
+    /*
     exitApp() {
       remote.getCurrentWindow().close();
     },
@@ -49,6 +51,7 @@ export default {
       }
       win.maximize();
     },
+    */
   },
 };
 </script>
