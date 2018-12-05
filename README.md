@@ -6,6 +6,8 @@
 
 **RedisVue** is a light Redis realtime data viewer, which shows realtime updates of keys into Redis and to inspect each key's history. It also allows to run arbitrary commands and perform preview `SET` operations such as `UNION`, `DIFF` and `INTERSECT`.
 
+<img src="https://github.com/techfort/redisvue/blob/master/screenshot.png?raw=true" />
+
 ## Screens
 
 ### Connect
