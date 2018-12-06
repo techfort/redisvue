@@ -23,7 +23,7 @@ function createWindow() {
     useContentSize: true,
     width: 1000,
     frame: false,
-    icon: path.join(__dirname, 'assets/icon-redis.svg'),
+    icon: path.join(__dirname, 'assets/icon.ico'),
   });
   mainWindow.loadURL(winURL);
   mainWindow.setMenu(null);
