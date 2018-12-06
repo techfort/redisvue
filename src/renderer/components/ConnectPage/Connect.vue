@@ -1,11 +1,13 @@
 <template>
     <div class='container'>
         <div>
-          <label for='url'>
-            <h2>connect to redis</h2>
-            URL
-          </label>
+          <h2>connect to redis</h2>
+          <label for='url'>URL</label>
           <input type='text' class='form-control' v-model='url' />
+          <label>Pattern</label>
+          <input type="text" class="form-control" v-model="pattern" />
+          <label>Database</label>
+          <input type="number" class="form-control" v-model="db" />
           <a class='uilink' @click="connect">CONNECT</a>
         </div>
     </div>
@@ -24,6 +26,8 @@ export default {
       });
       client.on('ready', async () => {
         await this.$store.dispatch('setUrl', this.redisURL());
+        await this.$store.dispatch('setPattern', this.pattern);
+        await this.$store.dispatch('setDb', this.db);
         await this.$store.dispatch('connect', client);
         // this.$router.push('/watch');
       });
@@ -39,6 +43,8 @@ export default {
     return {
       connected: false,
       url: 'localhost:6379',
+      pattern: '*',
+      db: 0,
     };
   },
   created() {

@@ -8,6 +8,8 @@ Vue.use(Vuex);
 
 const state = {
   redisURL: '',
+  db: 0,
+  pattern: '*',
   isConnected: false,
   redis: null,
   client: null,
@@ -37,7 +39,7 @@ const addEntry = (state, e) => {
 const initClient = (state, client) => {
   state.redis = client;
   state.client = promisifyAll(createClient({ url: state.redisURL }));
-  state.redis.psubscribe('__keyspace@0__:*');
+  state.redis.psubscribe(`__keyspace@${state.db}__:${state.pattern}`);
   state.redis.on('pmessage', async (_pattern, ch, op) => {
     const key = k(ch);
     const type = TYPES[op];
@@ -77,17 +79,44 @@ const mutations = {
     state.redisURL = url;
     return state;
   },
+  SET_PATTERN(state, pattern) {
+    state.pattern = pattern;
+    return state;
+  },
+  SET_DB(state, db) {
+    state.db = db;
+    return state;
+  },
+  RESET(state) {
+    state.errors = [];
+    state.entries = [];
+    state.hash = {};
+    state.list = {};
+    state.zset = {};
+    state.set = {};
+    state.string = {};
+    return state;
+  },
 };
 
 const actions = {
   connect({ commit }, e) {
     commit('CONNECT', e);
   },
+  reset({ commit }) {
+    commit('RESET');
+  },
   disconnect({ commit }, err) {
     commit('DISCONNECT', err);
   },
   setUrl({ commit }, e) {
     commit('SET_URL', e);
+  },
+  setPattern({ commit }, pattern) {
+    commit('SET_PATTERN', pattern);
+  },
+  setDb({ commit }, db) {
+    commit('SET_DB', db);
   },
   addEvent({ commit }, e) {
     commit('ADD_ENTRY', e);

@@ -34,25 +34,6 @@ export default {
     StatusBar,
   },
   store,
-  methods: {
-    /*
-    exitApp() {
-      remote.getCurrentWindow().close();
-    },
-    minimize() {
-      remote.getCurrentWindow().minimize();
-    },
-    maximize() {
-      const win = remote.getCurrentWindow();
-      const max = win.isMaximized();
-      if (max) {
-        win.unmaximize();
-        return;
-      }
-      win.maximize();
-    },
-    */
-  },
 };
 </script>
 
@@ -64,7 +45,7 @@ html, body {
   font-family: 'Share Tech Mono', 'Noto Sans', sans-serif;
   font-size: 1.1em;
   background: $nord0 !important;
-  color: $nord6 !important;
+  color: $nord4 !important;
   height: 100vh;
   overflow:hidden;
 }
@@ -89,6 +70,10 @@ html, body {
   position: fixed;
   -webkit-user-select: none;
   -webkit-app-region: drag;
+}
+.windowcontrols .row {
+  padding: 0;
+  margin: 0;
 }
 
 .windowcontrol {
