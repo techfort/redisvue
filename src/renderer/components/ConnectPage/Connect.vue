@@ -10,6 +10,7 @@
           <input type="number" class="form-control" v-model="db" />
           <a class='uilink' @click="connect">CONNECT</a>
         </div>
+        <div class="errorMessage" v-show="errorMessage">{{ errorMessage }}</div>
     </div>
 </template>
 <script>
@@ -28,15 +29,22 @@ export default {
         await this.$store.dispatch('setUrl', this.redisURL());
         await this.$store.dispatch('setPattern', this.pattern);
         await this.$store.dispatch('setDb', this.db);
+        await this.$store.dispatch('setErrorMessage', null);
         await this.$store.dispatch('connect', client);
         // this.$router.push('/watch');
       });
       client.on('error', (err) => {
+        this.$store.dispatch('setErrorMessage', err);
         this.$store.dispatch('disconnect', err);
       });
     },
     redisURL() {
       return `redis://${this.url}`;
+    },
+  },
+  computed: {
+    errorMessage() {
+      return this.$store.getters.ERROR_MSG;
     },
   },
   data() {

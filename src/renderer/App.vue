@@ -53,7 +53,9 @@ html, body {
   clear:both;
   padding-top: 32px;
 }
-
+.active {
+  color: $nord14 !important;
+}
 .logo {
   float: left;
 
@@ -63,13 +65,14 @@ html, body {
 }
 .windowcontrols {
   z-index: 1000000000;
-  background: $nord0;
-  text-size: 0.8em;
+  font-size: 0.9em;
   top: 0;
   left: 0;
   position: fixed;
   -webkit-user-select: none;
   -webkit-app-region: drag;
+  background: $nord0;
+  color: $nord14;
 }
 .windowcontrols .row {
   padding: 0;
@@ -96,6 +99,15 @@ a {
   outline: none;
 }
 
+.form-control {
+  background: $nord1 !important;
+  color: $nord4 !important;
+}
+
+input {
+  box-shadow: none !important;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -107,12 +119,16 @@ a {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: $nord3; 
+    background: $nord14; 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: $nord4; 
+    background: $nord3; 
+}
+
+.errorMessage {
+  color: $nord11 !important;
 }
 
 .row {
@@ -182,8 +198,8 @@ a.normallink, a.normallink:hover, a.normallink:visited {
 .evt {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    /* font-family: 'Courier New', Courier, monospace; */
-    font-size: 0.9em;
+    /* font-family: 'Courier New', Courier, monospace; 
+    font-size: 0.9em;*/
 }
 .evtvalue {
   word-wrap:break-word;

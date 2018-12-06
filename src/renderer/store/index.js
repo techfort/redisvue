@@ -13,6 +13,7 @@ const state = {
   isConnected: false,
   redis: null,
   client: null,
+  errorMessage: '',
   errors: [],
   entries: [],
   string: {},
@@ -67,6 +68,10 @@ const mutations = {
     state = initClient(state, e);
     return state;
   },
+  SET_ERROR_MSG(state, e) {
+    state.errorMessage = e;
+    return state;
+  },
   DISCONNECT(state, err) {
     state.client.quit();
     state.redis.quit();
@@ -106,6 +111,9 @@ const actions = {
   reset({ commit }) {
     commit('RESET');
   },
+  setErrorMessage({ commit }, err) {
+    commit('SET_ERROR_MSG', err);
+  },
   disconnect({ commit }, err) {
     commit('DISCONNECT', err);
   },
@@ -136,6 +144,7 @@ const getters = {
   STRING: state => state.string,
   getKeyHistory: state => (type, key) => state[type][key].history,
   INFO: state => state.redis.server_info,
+  ERROR_MSG: state => state.errorMessage,
 };
 
 export default new Vuex.Store({
