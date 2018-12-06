@@ -12,6 +12,15 @@
 
 The app subscribes to keyspace notifications and receives events from the channel. Each message received specifies 
 
+**IMPORTANT NOTE**: RedisVue can only receive events if the `notify-keyspace-events` parameter is set in `redis.conf` or if you turn it on by issuing `config set notify-keyspace-events KEA` from the redis cli. RedisVue *could* issue that command, but it's highly unadvisable to have a client UI do something that affects server settings automagically. So if you don't want to fiddle with `redis.conf`, simply move to your redis installation folder and issue the above command (eg.
+```
+cd <myredisinstall>
+src/redis-cli
+> config set notify-keyspace-events KEA
+```
+More info on keyspace notifications [here](https://redis.io/topics/notifications).
+
+**NOTE**: Redis does have command that outputs the result of each command performed, namely `MONITOR`. However, the documentation clearly states that this can decrease throughput of [more than 50%](https://redis.io/commands/monitor), so the keyspace notification workflow seems like a more unobtrusive solution, even though each event triggers a retrieve operation (eg. a `set` event will trigger a `get` operation to retrieve the key value, a `sadd` will trigger a `smembers` etc.).
 
 ## Screens
 
