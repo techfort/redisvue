@@ -1,8 +1,8 @@
+<img src="https://github.com/techfort/redisvue/blob/master/src/renderer/assets/icon-redis.svg" width="128" />
+
 # RedisVue
 
-<img src="https://github.com/techfort/redisvue/blob/master/src/renderer/assets/icon-redis.svg" width="256" />
-
-> redis real time monitor
+> real time Redis keys monitor
 
 **RedisVue** is a light Redis realtime data viewer, which shows realtime updates of keys in Redis and allows inspection of  each key's history. It also allows to run arbitrary commands and perform preview `SET` operations such as `UNION`, `DIFF` and `INTERSECT`.
 
@@ -10,7 +10,7 @@
 
 ## Workflow
 
-The app subscribes to keyspace notifications and receives events from the channel. Each message received specifies 
+The app subscribes to keyspace notifications and receives events from the channel. Each message received specifies the event and triggers a key retrieval that is then added to RedisVue's history.
 
 **IMPORTANT NOTE**: RedisVue can only receive events if the `notify-keyspace-events` parameter is set in `redis.conf` or if you turn it on by issuing `config set notify-keyspace-events KEA` from the redis cli. RedisVue *could* issue that command, but it's highly unadvisable to have a client UI do something that affects server settings automagically. So if you don't want to fiddle with `redis.conf`, simply move to your redis installation folder and issue the above command (eg.
 ```
