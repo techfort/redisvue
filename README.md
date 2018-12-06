@@ -1,8 +1,7 @@
-# <img src="https://github.com/techfort/redisvue/blob/master/src/renderer/assets/icon-redis.svg" width="128" /> RedisVue
+<img src="https://github.com/techfort/redisvue/blob/master/src/renderer/assets/icon-redis.svg" width="128" />
+# RedisVue
 
-
-
-> redis real time monitor
+> real time Redis keys monitor
 
 **RedisVue** is a light Redis realtime data viewer, which shows realtime updates of keys in Redis and allows inspection of  each key's history. It also allows to run arbitrary commands and perform preview `SET` operations such as `UNION`, `DIFF` and `INTERSECT`.
 
