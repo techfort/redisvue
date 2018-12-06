@@ -28,7 +28,7 @@ More info on keyspace notifications [here](https://redis.io/topics/notifications
 
 Specify the URL of the server and click connect. The status bar at the bottom will show a `connected` message with the URL of the server if the connection was successful. Default URL is `localhost:6379` for local redis installations.  
 You can also specify a database to listen to, default is `0` (redis has 0-15 databases, named with their number, you cannot "name" a database).
-Lastly you can specify a pattern for the channel on which events are received. This is useful if you want to only watch keys that contain a certain string, eg. `tw_mc_*`. Make sure to put asterisks on both sides of the pattern if the pattern can be contained at any position in the string (eg `*tw_mc_*).
+Lastly you can specify a pattern for the channel on which events are received. This is useful if you want to only watch keys that contain a certain string, eg. `tw_mc_*`. Make sure to put asterisks on both sides of the pattern if the pattern can be contained at any position in the string (eg `*tw_mc_*`).
 
 ### Watch
 
