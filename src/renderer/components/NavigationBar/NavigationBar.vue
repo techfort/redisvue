@@ -1,25 +1,25 @@
 <template>
   <div class="sidebar sticky-top">
     <div class="nav-item">
-      <router-link to="/watch" active-class="active">
+      <router-link to="/watch" active-class="router-link-active">
         <div class="menuopt">&#x23ff;</div>
         <div class="navitemtext">watch</div>
       </router-link>
     </div>
     <div class="nav-item">
-      <router-link to="/insert" active-class="active">
+      <router-link to="/insert" active-class="router-link-active">
         <div class="menuopt">&#x21d2;</div>
         <div class="navitemtext">run</div>
       </router-link>
     </div>
-    <div class="nav-item" active-class="active">
+    <div class="nav-item" active-class="router-link-active">
       <router-link to="/query">
         <div class="menuopt">&#x26A1;</div>
         <div class="navitemtext">query</div>
       </router-link>
     </div>
     <div class="nav-item">
-      <router-link to="/sets" active-class="active">
+      <router-link to="/sets" active-class="router-link-active">
         <div class="menuopt">&#x2282;</div>
         <div class="navitemtext">sets</div>
       </router-link>

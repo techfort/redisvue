@@ -1,6 +1,6 @@
 {
   "name": "redisvue",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Joe Minichino <joe.minichino@gmail.com>",
   "description": "redis real time monitor",
   "license": "MIT",
@@ -46,13 +46,16 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/icon.icns",
+      "publish": ["github"]
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "publish": ["github"] 
     },
     "linux": {
-      "icon": "build/icons"
+      "icon": "build/icons",
+      "publish": ["github"]
     }
   },
   "dependencies": {

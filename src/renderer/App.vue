@@ -53,7 +53,7 @@ html, body {
   clear:both;
   padding-top: 32px;
 }
-.active {
+.router-link-active {
   color: $nord14 !important;
 }
 .logo {
