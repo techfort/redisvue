@@ -73,8 +73,12 @@ const mutations = {
     return state;
   },
   DISCONNECT(state, err) {
-    state.client.quit();
-    state.redis.quit();
+    if (state.client) {
+      state.client.quit();
+    }
+    if (state.redis) {
+      state.redis.quit();
+    }
     state.redis = null;
     state.client = null;
     state.errors.push(err);
