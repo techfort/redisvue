@@ -41,3 +41,11 @@ script:
 branches:
   only:
   - master
+deploy:
+  provider: releases
+  api_key:
+    secure: eaca12adf84b358301aed024b2877f1dd405f028
+  file: dist/*
+  skip_cleanup: true
+  on:
+    tags: true

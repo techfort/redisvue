@@ -40,6 +40,7 @@ const addEntry = (state, e) => {
 const initClient = (state, client) => {
   state.redis = client;
   state.client = promisifyAll(createClient({ url: state.redisURL }));
+  state.client.zget = key => state.client.zrangeAsync(key, 0, -1, 'WITHSCORES');
   state.redis.psubscribe(`__keyspace@${state.db}__:${state.pattern}`);
   state.redis.on('pmessage', async (_pattern, ch, op) => {
     const key = k(ch);

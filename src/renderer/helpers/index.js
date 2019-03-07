@@ -22,6 +22,7 @@ export const OPS = {
   sadd: 'smembersAsync',
   srem: 'smembersAsync',
   hdel: 'hgetallAsync',
+  zadd: 'zrangeAsync',
 };
 
 export const TYPES = {
@@ -38,7 +39,7 @@ export const GETTERS = {
   string: 'getAsync',
   hash: 'hgetallAsync',
   set: 'smembersAsync',
-  zset: 'zrangeAsync',
+  zset: 'zget',
   list: 'lrangeAsync',
 };
 
