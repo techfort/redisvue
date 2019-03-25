@@ -24,6 +24,12 @@
         <div class="navitemtext">sets</div>
       </router-link>
     </div>
+   <div class="nav-item">
+      <router-link to="/pubsub" active-class="router-link-active">
+        <div class="menuopt">&#x2282;</div>
+        <div class="navitemtext">pubsub</div>
+      </router-link>
+    </div>
     <div class="nav-item">
       <a @click="disconnect"><span class="menuopt">&#x23fb;</span></a>
     </div>

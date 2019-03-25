@@ -13,6 +13,7 @@ const state = {
   isConnected: false,
   redis: null,
   client: null,
+  ps: null,
   errorMessage: '',
   errors: [],
   entries: [],
@@ -21,6 +22,8 @@ const state = {
   set: {},
   zset: {},
   list: {},
+  messages: {},
+  pschannels: [],
 };
 
 const k = str => str.replace('__keyspace@0__:', '');
@@ -57,6 +60,27 @@ const initClient = (state, client) => {
     const e = entry(key, type, data);
     addEntry(state, e);
   });
+  return state;
+};
+
+const subscribe = async (state, channel) => {
+  if (!state.ps) {
+    state.ps = promisifyAll(createClient({ url: state.redisURL }));
+    state.ps.on('message', (channel, message) => {
+      state.messages.unshift(entry(state.messages.length, channel, message));
+    });
+    state.messages = [];
+    state.ps.on('error', (err) => {
+      state.errorMessage = err;
+      state.ps = null;
+    });
+  }
+  await state.ps.subscribeAsync(channel);
+  return state;
+};
+
+const unsubscribe = async (state, channel) => {
+  await state.ps.unsubscribeAsync(channel);
   return state;
 };
 
@@ -105,6 +129,15 @@ const mutations = {
     state.zset = {};
     state.set = {};
     state.string = {};
+    state.messages = {};
+    return state;
+  },
+  SUB(state, channel) {
+    state = subscribe(state, channel);
+    return state;
+  },
+  UNSUB(state, channel) {
+    state = unsubscribe(state, channel);
     return state;
   },
 };
@@ -134,6 +167,12 @@ const actions = {
   addEvent({ commit }, e) {
     commit('ADD_ENTRY', e);
   },
+  subscribe({ commit }, channel) {
+    commit('SUB', channel);
+  },
+  unsubscribe({ commit }, channel) {
+    commit('UNSUB', channel);
+  },
 };
 
 const getters = {
@@ -150,6 +189,7 @@ const getters = {
   getKeyHistory: state => (type, key) => state[type][key].history,
   INFO: state => state.redis.server_info,
   ERROR_MSG: state => state.errorMessage,
+  PUBSUB: state => state.messages,
 };
 
 export default new Vuex.Store({

@@ -5,9 +5,8 @@ import screens from '../components/Redis/';
 Vue.use(Router);
 
 const {
-  Watch, Query, Insert, Sets, History,
+  Watch, Query, Insert, Sets, History, PubSub,
 } = screens;
-
 export default new Router({
   routes: [{
     path: '/',
@@ -38,6 +37,11 @@ export default new Router({
     path: '/history/:type/:key',
     name: 'history',
     component: History,
+  },
+  {
+    path: '/pubsub',
+    name: 'pubsub',
+    component: PubSub,
   },
   {
     path: '*',

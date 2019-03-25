@@ -3,6 +3,7 @@ import Sets from './Sets.vue';
 import Query from './Query.vue';
 import Insert from './Insert.vue';
 import History from './History.vue';
+import PubSub from './PubSub.vue';
 
 export default {
   Watch,
@@ -10,4 +11,5 @@ export default {
   Insert,
   Query,
   History,
+  PubSub,
 };
