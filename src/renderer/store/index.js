@@ -24,6 +24,7 @@ const state = {
   list: {},
   messages: {},
   pschannels: [],
+  subchannels: [],
 };
 
 const k = str => str.replace('__keyspace@0__:', '');
@@ -40,11 +41,28 @@ const addEntry = (state, e) => {
   return state;
 };
 
-const initClient = (state, client) => {
+const loadChannels = async (state) => {
+  if (!state.redis) {
+    console.log('Exiting without loading channels, app is disconnected.');
+    return state;
+  }
+  state.pschannels = [];
+  const { data, error } = await to(state.client.pubsubAsync('CHANNELS', '*'));
+  if (!error) {
+    state.pschannels = data;
+  }
+  return state;
+};
+
+const initClient = async (state, client) => {
   state.redis = client;
-  state.client = promisifyAll(createClient({ url: state.redisURL }));
+  state.client = await promisifyAll(createClient({ url: state.redisURL }));
+  const { error } = await to(state.client.send_commandAsync('config', ['set', 'notify-keyspace-events', 'KEA']));
+  if (error) {
+    state.errors.push(error);
+  }
   state.client.zget = key => state.client.zrangeAsync(key, 0, -1, 'WITHSCORES');
-  state.redis.psubscribe(`__keyspace@${state.db}__:${state.pattern}`);
+  await state.redis.psubscribe(`__keyspace@${state.db}__:${state.pattern}`);
   state.redis.on('pmessage', async (_pattern, ch, op) => {
     const key = k(ch);
     const type = TYPES[op];
@@ -60,27 +78,45 @@ const initClient = (state, client) => {
     const e = entry(key, type, data);
     addEntry(state, e);
   });
+  state = await loadChannels(state);
+  return state;
+};
+
+const initPS = async (state) => {
+  if (state.ps && state.ps.connected) {
+    return state;
+  }
+  state.ps = promisifyAll(createClient({ url: state.redisURL }));
+  state.ps.on('message', (channel, message) => {
+    if (!state.messages) {
+      state.messages = [];
+    }
+    state.messages.unshift(entry(state.messages.length, channel, message));
+  });
+  state.messages = [];
+  state.ps.on('error', (err) => {
+    state.errorMessage = err;
+    state.ps = null;
+  });
   return state;
 };
 
 const subscribe = async (state, channel) => {
-  if (!state.ps) {
-    state.ps = promisifyAll(createClient({ url: state.redisURL }));
-    state.ps.on('message', (channel, message) => {
-      state.messages.unshift(entry(state.messages.length, channel, message));
-    });
-    state.messages = [];
-    state.ps.on('error', (err) => {
-      state.errorMessage = err;
-      state.ps = null;
-    });
-  }
+  state = await initPS(state);
   await state.ps.subscribeAsync(channel);
+  // TODO: error handling of subscription failure
+  state.subchannels.push(channel);
   return state;
 };
 
 const unsubscribe = async (state, channel) => {
+  if (state.subchannels.indexOf(channel) === -1) {
+    return state;
+  }
+  state = await initPS(state);
   await state.ps.unsubscribeAsync(channel);
+  const index = state.subchannels.indexOf(channel);
+  state.subchannels.splice(index, 1);
   return state;
 };
 
@@ -140,6 +176,13 @@ const mutations = {
     state = unsubscribe(state, channel);
     return state;
   },
+  LOAD_CHANNELS(state) {
+    return loadChannels(state);
+  },
+  LOG_ERROR(state, err) {
+    state.errors.push(err);
+    return state;
+  },
 };
 
 const actions = {
@@ -173,11 +216,18 @@ const actions = {
   unsubscribe({ commit }, channel) {
     commit('UNSUB', channel);
   },
+  loadChannels({ commit }) {
+    commit('LOAD_CHANNELS');
+  },
+  logError({ commit }, err) {
+    commit('LOG_ERROR', err);
+  },
 };
 
 const getters = {
   URL: state => state.redisURL,
   REDIS: state => state.redis,
+  ERRORS: state => state.errors,
   CONNECTED: state => (state.redis ? state.redis.connected : false),
   EVENTS: state => state.entries,
   CLIENT: state => state.client,
@@ -190,6 +240,9 @@ const getters = {
   INFO: state => state.redis.server_info,
   ERROR_MSG: state => state.errorMessage,
   PUBSUB: state => state.messages,
+  CHANNELS: state => state.pschannels,
+  MESSAGES: state => state.messages,
+  SUBCHANNELS: state => state.subchannels,
 };
 
 export default new Vuex.Store({

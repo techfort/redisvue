@@ -5,7 +5,7 @@ import screens from '../components/Redis/';
 Vue.use(Router);
 
 const {
-  Watch, Query, Insert, Sets, History, PubSub,
+  Watch, Query, Insert, Sets, History, PubSub, Zsets,
 } = screens;
 export default new Router({
   routes: [{
@@ -22,6 +22,11 @@ export default new Router({
     path: '/sets',
     name: 'sets',
     component: Sets,
+  },
+  {
+    path: '/zsets',
+    name: 'zsets',
+    component: Zsets,
   },
   {
     path: '/insert',

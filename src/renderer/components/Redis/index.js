@@ -4,6 +4,7 @@ import Query from './Query.vue';
 import Insert from './Insert.vue';
 import History from './History.vue';
 import PubSub from './PubSub.vue';
+import Zsets from './Zsets.vue';
 
 export default {
   Watch,
@@ -12,4 +13,5 @@ export default {
   Query,
   History,
   PubSub,
+  Zsets,
 };

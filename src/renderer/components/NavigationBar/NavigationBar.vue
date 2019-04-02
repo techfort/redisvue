@@ -20,6 +20,11 @@
         <div class="navitemtext">sets</div>
       </router-link>
     </div>
+    <div class="nav-item">
+      <router-link to="/zsets" active-class="router-link-active">
+        <div class="navitemtext">zsets</div>
+      </router-link>
+    </div>
    <div class="nav-item">
       <router-link to="/pubsub" active-class="router-link-active">
         <div class="navitemtext">pubsub</div>
@@ -27,7 +32,7 @@
     </div>
     <div class="nav-item">
       <a @click="disconnect">
-        <div class="navitemtext" active-class="router-link-active">disconnect</div>
+        <div class="navitemtext" active-class="router-link-active">esc</div>
       </a>
     </div>
   </div>

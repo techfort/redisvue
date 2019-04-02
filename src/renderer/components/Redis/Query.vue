@@ -30,10 +30,11 @@ import to, { entry, GETTERS } from '../../helpers';
 const scan = (client, term, cursor, results) => client.scanAsync(cursor, 'MATCH', `*${term}*`, 'COUNT', 10)
   .then((res) => {
     const [cursor, keys] = res;
+    console.log('res and keys', res, keys);
+    results = results.concat(keys);
     if (cursor === '0') {
       return results;
     }
-    results = results.concat(keys);
     return scan(client, term, cursor, results);
   }).catch((err) => { throw err; });
 
@@ -43,6 +44,7 @@ const query = async (client, term) => {
   const promises = keys.map(k => client.typeAsync(k).then(async (typeResult) => {
     const method = GETTERS[typeResult];
     const args = [k];
+    console.log('method and args', method, args);
     if (method === 'zrangeAsync' || method === 'lrangeAsync') {
       args.push(0, -1);
       if (method === 'zrangeAsync') {
@@ -55,6 +57,7 @@ const query = async (client, term) => {
     }
   }));
   await Promise.all(promises);
+  console.log('RESULTS FROM PROMISES', results);
   return results;
 };
 
@@ -82,6 +85,7 @@ export default {
       this.entries = [];
       if (this.term.length > 3) {
         query(this.$store.getters.CLIENT, this.term).then((results) => {
+          console.log('Results', results);
           this.entries = results;
         });
       }
