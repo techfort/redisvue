@@ -320,4 +320,30 @@ a:hover {
   font-size: 0.9em;
   font-variant: small-caps;
 }
+#pubsubwrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 200px, auto; 
+}
+#pubsubmessages {
+  display:grid;
+  grid-template-rows: repeat(50, 1fr);
+}
+.pubsubentry {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row: span 1;
+  font-size: 0.9em;
+}
+.pubsubchannelname {
+  grid-column: span 1;
+  font-variant: small-caps;
+  background: $nord3 !important;
+  text-align: center;
+}
+.pubsubmessage {
+  grid-column: span 3;
+}
+
+
 </style>

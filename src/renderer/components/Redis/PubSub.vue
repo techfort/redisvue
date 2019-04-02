@@ -1,13 +1,10 @@
 <template>
   <div id="pubsubwrapper" class="contentwrapper">
-    <div class="psheader">
-      <div>
-          <label>PUBSUB</label>
-      </div>
-      
-    </div>
     <div class="psbody">
       <div class="channelslist">
+        <label>FILTER CHANNEL</label><input type="text" v-model="channelfilter" class="form-control" />
+        <label>FILTER MESSAGE</label><input type="text" v-model="textfilter" class="form-control" /> 
+        <a class="uilink" @click="clear">clear messages</a>
         <div><label>ACTIVE CHANNELS</label></div>
         <ul>
         <li v-for="c in channels" v-bind:key="c" class="channel" @click="subscribe($event)" v-bind:id="c">{{ c }}</li>
@@ -15,59 +12,44 @@
       </div>
       <div class="subscribedchannels">
         <div><label>SUBSCRIBE TO CHANNEL</label>
-          <input type="text" v-model="channel" @keyup.enter="subscribeToChannel" class="inputform" /><a class="uilink">subscribe</a>
+          <label>Channel Name</label>
+          <input type="text" v-model="channel" @keyup.enter="subscribeToChannel" class="form-control" /><a class="uilink">subscribe</a>
         </div>
-        <div><label>SUBSCRIBED (click to unsubscribe)</label></div>
+        <div><label>SUBSCRIBED</label></div>
         <ul>
-          <li v-for="p in SUBCHANNELS" :key="p" class="channel" @click="unsubscribe($event)" :id="p">{{ p }}</li>
+          <li v-for="p in SUBCHANNELS" :key="p" class="channel">
+            <div>{{ p }}
+              <div><input type="text" placeholder="type+enter to publish" class="form-control" @keyup.enter="publishToChannel($event)" v-bind:id="p" /></div>
+              <a href="#" @click="unsubscribe($event)" :id="p">unsubscribe</a>
+            </div>
+          </li>
         </ul>
       </div>
       <div class="log">
         <label>MESSAGES</label>
-        Filter channel: <input type="text" v-model="channelfilter" class="inputform" /> Filter message: <input type="text" v-model="textfilter" class="inputform" /> 
+        
         <div id="pubsubmessages">
           <div class="pubsubentry" v-for="e in entries" v-bind:key="e.key">
             <div class="pubsubchannelname">{{ e.type }}</div>
             <div class="pubsubmessage">{{ e.value }}</div>
           </div>
         </div>
-        <!--
-        <Event v-for="e in entries" v-bind:event="e" v-bind:key="e.key"/>
-        -->
       </div>
     </div>
   </div>
 </template>
 <style>
-#pubsubwrapper {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 200px, auto; 
-}
-#pubsubmessages {
-  display:grid;
-  grid-template-rows: repeat(50, 1fr);
-}
-.pubsubentry {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-row: span 1;
-}
-.pubsubchannelname {
-  grid-column: span 1;
-}
-.pubsubmessage {
-  grid-column: span 2;
-}
 
-
-
+li {
+  list-style-type: none;
+}
 .psheader {
   grid-column: span 12;
 }
 .psbody {
   display: grid;
   grid-column: span 12;
+  grid-gap: 10px;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: auto;
   overflow: auto;
@@ -89,6 +71,7 @@
 }
 </style>
 <script>
+import { setInterval } from 'timers';
 import { mapGetters } from 'vuex';
 import Event from './Event.vue';
 
@@ -105,8 +88,18 @@ export default {
     };
   },
   methods: {
+    async clear() {
+      await this.$store.dispatch('clearMessages');
+    },
     async loadChannels() {
       await this.$store.dispatch('loadChannels');
+    },
+    async publishToChannel(e) {
+      await this.$store.dispatch('publish', {
+        channel: e.target.id,
+        message: e.target.value,
+      });
+      e.target.value = '';
     },
     async subscribe(e) {
       const channel = e.target.id;
@@ -121,11 +114,12 @@ export default {
     },
     async subscribeToChannel() {
       await this.$store.dispatch('subscribe', this.channel);
+      this.channel = '';
     },
   },
   created() {
-    console.log('Loading channels');
     this.loadChannels();
+    setInterval(this.loadChannels, 5000);
   },
   computed: {
     ...mapGetters([

@@ -25,6 +25,7 @@ const state = {
   messages: {},
   pschannels: [],
   subchannels: [],
+  publisher: null,
 };
 
 const k = str => str.replace('__keyspace@0__:', '');
@@ -120,6 +121,14 @@ const unsubscribe = async (state, channel) => {
   return state;
 };
 
+const publish = async (state, { channel, message }) => {
+  if (!state.publisher || !state.publisher.connected) {
+    state.publisher = promisifyAll(createClient({ url: state.redisURL }));
+  }
+  await state.publisher.publishAsync(channel, message);
+  return state;
+};
+
 const mutations = {
   ADD_ENTRY(state, e) {
     state = addEntry(state, e);
@@ -183,6 +192,14 @@ const mutations = {
     state.errors.push(err);
     return state;
   },
+  CLEAR_MESSAGES(state) {
+    state.messages = [];
+    return state;
+  },
+  PUBLISH(state, obj) {
+    state = publish(state, obj);
+    return state;
+  },
 };
 
 const actions = {
@@ -221,6 +238,12 @@ const actions = {
   },
   logError({ commit }, err) {
     commit('LOG_ERROR', err);
+  },
+  clearMessages({ commit }) {
+    commit('CLEAR_MESSAGES');
+  },
+  publish({ commit }, obj) {
+    commit('PUBLISH', obj);
   },
 };
 
