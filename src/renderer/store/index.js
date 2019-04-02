@@ -239,7 +239,12 @@ const getters = {
   getKeyHistory: state => (type, key) => state[type][key].history,
   INFO: state => state.redis.server_info,
   ERROR_MSG: state => state.errorMessage,
-  PUBSUB: state => state.messages,
+  PUBSUB: (state) => {
+    if (!state.messages) {
+      state.messages = [];
+    }
+    return state.messages;
+  },
   CHANNELS: state => state.pschannels,
   MESSAGES: state => state.messages,
   SUBCHANNELS: state => state.subchannels,

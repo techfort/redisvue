@@ -23,7 +23,17 @@
         </ul>
       </div>
       <div class="log">
+        <label>MESSAGES</label>
+        Filter channel: <input type="text" v-model="channelfilter" class="inputform" /> Filter message: <input type="text" v-model="textfilter" class="inputform" /> 
+        <div id="pubsubmessages">
+          <div class="pubsubentry" v-for="e in entries" v-bind:key="e.key">
+            <div class="pubsubchannelname">{{ e.type }}</div>
+            <div class="pubsubmessage">{{ e.value }}</div>
+          </div>
+        </div>
+        <!--
         <Event v-for="e in entries" v-bind:event="e" v-bind:key="e.key"/>
+        -->
       </div>
     </div>
   </div>
@@ -34,6 +44,24 @@
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: 200px, auto; 
 }
+#pubsubmessages {
+  display:grid;
+  grid-template-rows: repeat(50, 1fr);
+}
+.pubsubentry {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-row: span 1;
+}
+.pubsubchannelname {
+  grid-column: span 1;
+}
+.pubsubmessage {
+  grid-column: span 2;
+}
+
+
+
 .psheader {
   grid-column: span 12;
 }
@@ -41,8 +69,8 @@
   display: grid;
   grid-column: span 12;
   grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto;
   overflow: auto;
-  height: 80vh;
   padding-bottom: 60px;
 }
 .channel {
@@ -55,6 +83,8 @@
   grid-column: span 1;
 }
 .log {
+  grid-row: span 1;
+  height: 85vh;
   grid-column: span 4;
 }
 </style>
@@ -70,6 +100,8 @@ export default {
   data() {
     return {
       channel: '',
+      channelfilter: '',
+      textfilter: '',
     };
   },
   methods: {
@@ -105,9 +137,15 @@ export default {
       return this.$store.getters.CHANNELS.filter(e => e !== '');
     },
     entries() {
-      const messages = this.$store.getters.PUBSUB;
-      console.log(messages);
-      return messages; // .slice(0, 50);
+      let messages = Array.from(this.$store.getters.PUBSUB);
+      if (this.channelfilter !== '') {
+        messages = messages.filter(m => m.type.indexOf(this.channelfilter) !== -1);
+      }
+      if (this.textfilter !== '') {
+        console.log('Filtering by text');
+        messages = messages.filter(m => m.value.indexOf(this.textfilter) !== -1);
+      }
+      return messages.slice(0, 100);
     },
   },
 };
