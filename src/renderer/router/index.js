@@ -5,7 +5,7 @@ import screens from '../components/Redis/';
 Vue.use(Router);
 
 const {
-  Watch, Query, Insert, Sets, History, PubSub, Zsets,
+  Watch, Query, Insert, Sets, History, PubSub, Zsets, Editor,
 } = screens;
 export default new Router({
   routes: [{
@@ -47,6 +47,11 @@ export default new Router({
     path: '/pubsub',
     name: 'pubsub',
     component: PubSub,
+  },
+  {
+    path: '/lua',
+    name: 'lua',
+    component: Editor,
   },
   {
     path: '*',

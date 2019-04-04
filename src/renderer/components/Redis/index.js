@@ -5,6 +5,7 @@ import Insert from './Insert.vue';
 import History from './History.vue';
 import PubSub from './PubSub.vue';
 import Zsets from './Zsets.vue';
+import Editor from './Editor.vue';
 
 export default {
   Watch,
@@ -14,4 +15,5 @@ export default {
   History,
   PubSub,
   Zsets,
+  Editor,
 };

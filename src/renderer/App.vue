@@ -23,15 +23,29 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import VueMousetrap from 'vue-mousetrap';
 import store from './store';
 import StatusBar from './components/StatusBar/StatusBar.vue';
 import NavigationBar from './components/NavigationBar/NavigationBar.vue';
+
+Vue.use(VueMousetrap);
 
 export default {
   name: 'redisvue',
   components: {
     NavigationBar,
     StatusBar,
+  },
+  created() {
+    const routeNames = ['home', 'watch', 'query', 'insert', 'sets', 'zsets', 'pubsub', 'lua'];
+    this.$mousetrap.bind('ctrl+tab', () => this.$router.push(routeNames[(routeNames.indexOf(this.$router.currentRoute.name) + 1) % routeNames.length]));
+    this.$mousetrap.bind('ctrl+shift+tab', () => {
+      const index = routeNames.indexOf(this.$router.currentRoute.name);
+      const i = index === 0 ? routeNames.length - 1 : index - 1;
+      console.log(`Index: ${index}, ${routeNames.indexOf(this.$router.currentRoute.name)}, i: ${i}`);
+      return this.$router.push(routeNames[i]);
+    });
   },
   store,
 };
@@ -338,12 +352,14 @@ a:hover {
 .pubsubchannelname {
   grid-column: span 1;
   font-variant: small-caps;
-  background: $nord3 !important;
+  border-bottom: 1px solid $nord3 !important;
   text-align: center;
 }
 .pubsubmessage {
   grid-column: span 3;
 }
-
-
+.score, .member {
+  border-bottom: 1px solid $nord3;
+  border-right: 1px solid $nord3;
+}
 </style>

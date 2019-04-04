@@ -26,6 +26,7 @@ const state = {
   pschannels: [],
   subchannels: [],
   publisher: null,
+  script: 'return redis.call("PUBLISH", "dbg_lua", "test")',
 };
 
 const k = str => str.replace('__keyspace@0__:', '');
@@ -200,6 +201,10 @@ const mutations = {
     state = publish(state, obj);
     return state;
   },
+  LUA_CHANGE(state, script) {
+    state.script = script;
+    return state;
+  },
 };
 
 const actions = {
@@ -245,6 +250,9 @@ const actions = {
   publish({ commit }, obj) {
     commit('PUBLISH', obj);
   },
+  luaChange({ commit }, script) {
+    commit('LUA_CHANGE', script);
+  },
 };
 
 const getters = {
@@ -271,6 +279,7 @@ const getters = {
   CHANNELS: state => state.pschannels,
   MESSAGES: state => state.messages,
   SUBCHANNELS: state => state.subchannels,
+  SCRIPT: state => state.script,
 };
 
 export default new Vuex.Store({

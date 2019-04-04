@@ -30,6 +30,11 @@
         <div class="navitemtext">pubsub</div>
       </router-link>
     </div>
+   <div class="nav-item">
+      <router-link to="/lua" active-class="router-link-active">
+        <div class="navitemtext">lua</div>
+      </router-link>
+    </div>
     <div class="nav-item">
       <a @click="disconnect">
         <div class="navitemtext" active-class="router-link-active">esc</div>
