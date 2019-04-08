@@ -51,3 +51,15 @@ In this screen you can run arbitrary commands or use the provided forms for `SET
 
 Since RedisVue is particularly aimed at developers, it is useful to preview set operations before executing them to ensure the desired data is stored in the server. Select any two sets from the right-hand side and their `UNION`, `DIFF` and `INTERSECT` will be automatically displayed.  
 Any successive selection will replace the second set with the selected one. You can invert the selection of sets by clicking `INVERT SELECTION`.
+
+### Zsets
+
+In this screen you can perform remote queries on zsets and have the results displayed on screen. Make sure to be familiar with Redis commands since the error messages received from Redis may be a bit generic (eg. "wrong syntax").
+
+### PubSub
+
+In this screen you can subscribe to Redis channels, either by clicking on one of the "active" channels (active channels are the result of a `PUBSUB CHANNELS` command and are a list of channels with active subscribers), or subscribing to new channels. Each channel listed in the active channels has a text input in which you can type a message to be broadcast on that channel. Click on "unsubscribe" to unsubscribe to that channel.
+
+### Lua
+
+A small lua editor that lets you run scripts. 
