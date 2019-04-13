@@ -1,6 +1,6 @@
 {
   "name": "redisvue",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Joe Minichino <joe.minichino@gmail.com>",
   "description": "redis real time monitor",
   "license": "MIT",

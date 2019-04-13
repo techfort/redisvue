@@ -6,7 +6,6 @@
     <div class="luabuttons">
       NUMKEYS: <input type="number" v-model="numkeys" /> KEYS: <input type="text" v-model="keys" /> ARGV: <input type="text" v-model="argv" />
       <a class="uilink" href="#" @click="run">run</a>
-      <a class="uilink" href="#">open</a>
     </div>
     <div class="luaconsole">
       {{ output }}
@@ -30,6 +29,7 @@
 </style>
 
 <script>
+import { readFileAsync, writeFileAsync } from 'fs';
 import { mapGetters } from 'vuex';
 import Lua from './Lua.vue';
 
