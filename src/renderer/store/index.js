@@ -63,6 +63,7 @@ const initClient = async (state, client) => {
     state.errors.push(error);
   }
   state.client.zget = key => state.client.zrangeAsync(key, 0, -1, 'WITHSCORES');
+  state.client.getList = key => state.client.lrangeAsync(key, 0, -1);
   await state.redis.psubscribe(`__keyspace@${state.db}__:${state.pattern}`);
   state.redis.on('pmessage', async (_pattern, ch, op) => {
     const key = k(ch);

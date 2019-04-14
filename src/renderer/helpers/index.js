@@ -33,6 +33,10 @@ export const TYPES = {
   hdel: 'hash',
   zadd: 'zset',
   zrem: 'zset',
+  lpush: 'list',
+  lpop: 'list',
+  rpush: 'list',
+  rpop: 'list',
 };
 
 export const GETTERS = {
@@ -40,7 +44,7 @@ export const GETTERS = {
   hash: 'hgetallAsync',
   set: 'smembersAsync',
   zset: 'zget',
-  list: 'lrangeAsync',
+  list: 'getList',
 };
 
 export default promise => promise.then(data => ({ error: null, data }))
