@@ -136,7 +136,6 @@ export default {
         messages = messages.filter(m => m.type.indexOf(this.channelfilter) !== -1);
       }
       if (this.textfilter !== '') {
-        console.log('Filtering by text');
         messages = messages.filter(m => m.value.indexOf(this.textfilter) !== -1);
       }
       return messages.slice(0, 100);

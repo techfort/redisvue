@@ -102,7 +102,6 @@ export default {
         }
         return e;
       });
-      console.log('Issuing query', args);
       const command = `${this.command.toLowerCase()}Async`;
       const { data, error } = await zsetQuery(
         this.$store.getters.CLIENT,
@@ -113,11 +112,9 @@ export default {
         },
       );
       if (error) {
-        console.log('ERROR', error);
         this.error = error.message;
         return;
       }
-      console.log('RESULTS', data);
       this.result = [];
       const withscores = args.indexOf('WITHSCORES') !== -1;
       this.result = zip(data, withscores);

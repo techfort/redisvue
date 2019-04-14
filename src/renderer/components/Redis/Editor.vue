@@ -29,7 +29,6 @@
 </style>
 
 <script>
-import { readFileAsync, writeFileAsync } from 'fs';
 import { mapGetters } from 'vuex';
 import Lua from './Lua.vue';
 
@@ -57,9 +56,10 @@ export default {
   methods: {
     async run() {
       this.output = 'loading...';
+      const that = this;
       this.CLIENT.eval(this.SCRIPT, this.numkeys, ...this.keys.split(' '), ...this.argv.split(' '), (err, result) => {
         if (err) {
-          console.log('ERROR', err);
+          that.$store.dispatch('logError', err);
         }
         this.output = result || JSON.stringify(err);
       });

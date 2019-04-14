@@ -43,7 +43,6 @@ export default {
     this.$mousetrap.bind('ctrl+shift+tab', () => {
       const index = routeNames.indexOf(this.$router.currentRoute.name);
       const i = index === 0 ? routeNames.length - 1 : index - 1;
-      console.log(`Index: ${index}, ${routeNames.indexOf(this.$router.currentRoute.name)}, i: ${i}`);
       return this.$router.push(routeNames[i]);
     });
   },

@@ -45,7 +45,6 @@ const addEntry = (state, e) => {
 
 const loadChannels = async (state) => {
   if (!state.redis) {
-    console.log('Exiting without loading channels, app is disconnected.');
     return state;
   }
   state.pschannels = [];
