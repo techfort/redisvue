@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="maincontainer">
-      <NavigationBar></NavigationBar> 
+      <NavigationBar></NavigationBar>
       <div class="main">
         <router-view></router-view>
       </div>
@@ -127,17 +127,17 @@ input {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: $nord0; 
+    background: $nord0;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: $nord14; 
+    background: $nord14;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: $nord3; 
+    background: $nord3;
 }
 
 .errorMessage {
@@ -211,7 +211,7 @@ a.normallink, a.normallink:hover, a.normallink:visited {
 .evt {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    /* font-family: 'Courier New', Courier, monospace; 
+    /* font-family: 'Courier New', Courier, monospace;
     font-size: 0.9em;*/
 }
 .evtvalue {
@@ -222,6 +222,12 @@ a.normallink, a.normallink:hover, a.normallink:visited {
 }
 .evtrow {
     font-size: 0.8rem;
+
+    .keycol {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 }
 .fullvalue {
   font-size: 0.9em;
@@ -273,7 +279,7 @@ pre {
 .zset {
   color: $nord12 !important;
 }
- 
+
 .hash {
   background: $nord14;
   color: $nord3;
@@ -336,7 +342,7 @@ a:hover {
 #pubsubwrapper {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 200px, auto; 
+  grid-template-rows: 200px, auto;
 }
 #pubsubmessages {
   display:grid;
@@ -360,5 +366,11 @@ a:hover {
 .score, .member {
   border-bottom: 1px solid $nord3;
   border-right: 1px solid $nord3;
+}
+// assumption is 2 child elements
+.historyview > * {
+  max-height: 50vh;
+  overflow-y: auto;
+  word-wrap: break-word;
 }
 </style>
