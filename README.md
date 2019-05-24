@@ -10,8 +10,12 @@
 
 ## Installation
 
-I am working on producing distribution binaries, but for now:  
-Clone the repo, run `npm i` and `npm run dev` (or `npm run build` followed by the execution of the binary produced in the `build/` folder).
+I am working on producing distribution binaries, but for now:
+Clone the repo, run `npm i` and...
+
+* `npm start`
+* or `npm run dev`
+* or `npm run build` followed by the execution of the binary produced in the `build/` folder
 
 ## Status
 
@@ -35,7 +39,7 @@ Note, `Ctrl+tab` lets you scroll across the various screens, `Ctrl+shift+tab` to
 
 ### Connect
 
-Specify the URL of the server and click connect. The status bar at the bottom will show a `connected` message with the URL of the server if the connection was successful. Default URL is `localhost:6379` for local redis installations.  
+Specify the URL of the server and click connect. The status bar at the bottom will show a `connected` message with the URL of the server if the connection was successful. Default URL is `localhost:6379` for local redis installations.
 You can also specify a database to listen to, default is `0` (redis has 0-15 databases, named with their number, you cannot "name" a database).
 Lastly you can specify a pattern for the channel on which events are received. This is useful if you want to only watch keys that contain a certain string, eg. `myprefix_*`. Make sure to put asterisks on both sides of the pattern if the pattern can be contained at any position in the string (eg `*myprefix_*`).
 
@@ -58,7 +62,7 @@ In this screen you can run arbitrary commands or use the provided forms for `SET
 
 ### Sets
 
-Since RedisVue is particularly aimed at developers, it is useful to preview set operations before executing them to ensure the desired data is stored in the server. Select any two sets from the right-hand side and their `UNION`, `DIFF` and `INTERSECT` will be automatically displayed.  
+Since RedisVue is particularly aimed at developers, it is useful to preview set operations before executing them to ensure the desired data is stored in the server. Select any two sets from the right-hand side and their `UNION`, `DIFF` and `INTERSECT` will be automatically displayed.
 Any successive selection will replace the second set with the selected one. You can invert the selection of sets by clicking `INVERT SELECTION`.
 
 ### Zsets
