@@ -1,6 +1,7 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid historyview">
     <div class="row">
+      <a @click="back" class="uilink">back</a>
       <label><h2>history of [ {{ type }} ]: {{ key }}</h2></label>
     </div>
     <div class="maincontent" id="historylist">
@@ -44,6 +45,11 @@ export default {
       } catch (_err) {
         return v;
       }
+    },
+  },
+  methods: {
+    back() {
+      window.history.go(-1);
     },
   },
   components: {
