@@ -22,6 +22,8 @@ const state = {
   set: {},
   zset: {},
   list: {},
+  del: {},
+  expire: {},
   messages: {},
   pschannels: [],
   subchannels: [],
@@ -68,13 +70,24 @@ const initClient = async (state, client) => {
   state.redis.on('pmessage', async (_pattern, ch, op) => {
     const key = k(ch);
     const type = TYPES[op];
-    if (op === 'expire' ||
-    op === 'del' || !GETTERS[type]
-    ) {
+    if (op === 'expire') {
+      const { error, data } = await to(state.client.ttlAsync(key));
+      if (error) {
+        return;
+      }
+      const date = new Date();
+      addEntry(state, entry(key, op, `TTL at ${date.toUTCString()}: ${data}`));
       return;
     }
-    const { err, data } = await to(state.client[GETTERS[type]](key));
-    if (err) {
+    if (op === 'del') {
+      addEntry(state, entry(key, op, {}));
+      return;
+    }
+    if (!GETTERS[type]) {
+      return;
+    }
+    const { error, data } = await to(state.client[GETTERS[type]](key));
+    if (error) {
       return;
     }
     const e = entry(key, type, data);
